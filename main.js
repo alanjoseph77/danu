@@ -521,7 +521,7 @@ function loadBirthdayIframe() {
   if (!birthdayIframe) {
     birthdayIframe = document.createElement('iframe');
     birthdayIframe.id = 'birthday-iframe';
-    birthdayIframe.src = 'birthday.html';
+    birthdayIframe.src = './birthday.html'; // Use relative path
     birthdayIframe.style.cssText = `
       position: fixed;
       top: 0;
@@ -534,6 +534,17 @@ function loadBirthdayIframe() {
       opacity: 0;
       transition: opacity 0.5s ease-in-out;
     `;
+    
+    // Add loading event handler
+    birthdayIframe.onload = function() {
+      console.log('Birthday iframe loaded successfully!');
+    };
+    
+    birthdayIframe.onerror = function() {
+      console.error('Failed to load birthday iframe');
+      // Fallback: redirect to birthday page
+      window.open('./birthday.html', '_blank');
+    };
     
     // Add close button for iframe with better styling
     const closeBtn = document.createElement('button');
@@ -564,6 +575,7 @@ function loadBirthdayIframe() {
       birthdayIframe.style.opacity = '0';
       setTimeout(() => {
         birthdayIframe.style.display = 'none';
+        closeBtn.style.display = 'none';
       }, 500);
     });
     
@@ -585,6 +597,9 @@ function loadBirthdayIframe() {
   
   // Show the iframe with fade in effect
   birthdayIframe.style.display = 'block';
+  const closeBtn = birthdayIframe.nextElementSibling;
+  if (closeBtn) closeBtn.style.display = 'flex';
+  
   setTimeout(() => {
     birthdayIframe.style.opacity = '1';
   }, 50);
@@ -974,6 +989,8 @@ function init3DWorldClickListeners() {
       }
       
       if (intersect.object.name === 'birthdayButton') {
+        console.log('Birthday button clicked!'); // Debug log
+        
         // Add click animation feedback
         gsap.to(intersect.object.scale, {
           x: 0.9,
@@ -992,10 +1009,15 @@ function init3DWorldClickListeners() {
           }
         });
         
-        // Load birthday iframe with slight delay for animation
-        setTimeout(() => {
+        // Try to load birthday iframe, with fallback
+        try {
           loadBirthdayIframe();
-        }, 200);
+          console.log('Iframe loading initiated');
+        } catch (error) {
+          console.error('Iframe loading failed:', error);
+          // Fallback: open in new tab
+          window.open('./birthday.html', '_blank');
+        }
       }
 
       if (
