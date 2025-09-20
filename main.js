@@ -521,7 +521,7 @@ function loadBirthdayIframe() {
   if (!birthdayIframe) {
     birthdayIframe = document.createElement('iframe');
     birthdayIframe.id = 'birthday-iframe';
-    birthdayIframe.src = './birthday.html'; // Use relative path
+    birthdayIframe.src = 'birthday.html'; // Relative path should work now
     birthdayIframe.style.cssText = `
       position: fixed;
       top: 0;
@@ -543,7 +543,7 @@ function loadBirthdayIframe() {
     birthdayIframe.onerror = function() {
       console.error('Failed to load birthday iframe');
       // Fallback: redirect to birthday page
-      window.open('./birthday.html', '_blank');
+      window.open('birthday.html', '_blank');
     };
     
     // Add close button for iframe with better styling
@@ -1016,7 +1016,7 @@ function init3DWorldClickListeners() {
         } catch (error) {
           console.error('Iframe loading failed:', error);
           // Fallback: open in new tab
-          window.open('./birthday.html', '_blank');
+          window.open('birthday.html', '_blank');
         }
       }
 
